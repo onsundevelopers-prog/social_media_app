@@ -4,22 +4,13 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { IUser } from "@/types";
 import { getCurrentUser } from "@/lib/appwrite/api";
 
-export const INITIAL_USER = {
+export const INITIAL_USER: IUser = {
   id: "",
   name: "",
   username: "",
   email: "",
   imageUrl: "",
   bio: "",
-};
-
-const INITIAL_STATE = {
-  user: INITIAL_USER,
-  isLoading: false,
-  isAuthenticated: false,
-  setUser: () => {},
-  setIsAuthenticated: () => {},
-  checkAuthUser: async () => false as boolean,
 };
 
 type IContextType = {
@@ -29,6 +20,17 @@ type IContextType = {
   isAuthenticated: boolean;
   setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
   checkAuthUser: () => Promise<boolean>;
+  signInGuest: () => Promise<IUser>; // ✅ added guest login
+};
+
+const INITIAL_STATE = {
+  user: INITIAL_USER,
+  isLoading: false,
+  isAuthenticated: false,
+  setUser: () => {},
+  setIsAuthenticated: () => {},
+  checkAuthUser: async () => false,
+  signInGuest: async () => INITIAL_USER, // default placeholder
 };
 
 const AuthContext = createContext<IContextType>(INITIAL_STATE);
@@ -53,7 +55,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           bio: currentAccount.bio,
         });
         setIsAuthenticated(true);
-
         return true;
       }
 
@@ -66,26 +67,43 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  // ✅ Guest login
+  const signInGuest = async () => {
+    setIsLoading(true);
+    try {
+      const guestUser: IUser = {
+        id: "guest_" + Date.now(),
+        name: "Guest",
+        username: "Guest" + Math.floor(Math.random() * 10000),
+        email: "",
+        imageUrl: "",
+        bio: "",
+      };
+      setUser(guestUser);
+      setIsAuthenticated(true);
+      return guestUser;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     const cookieFallback = localStorage.getItem("cookieFallback");
-    if (
-      cookieFallback === "[]" ||
-      cookieFallback === null ||
-      cookieFallback === undefined
-    ) {
+    if (!cookieFallback || cookieFallback === "[]") {
       navigate("/sign-in");
     }
 
     checkAuthUser();
   }, []);
 
-  const value = {
+  const value: IContextType = {
     user,
     setUser,
     isLoading,
     isAuthenticated,
     setIsAuthenticated,
     checkAuthUser,
+    signInGuest, // provide guest login
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
