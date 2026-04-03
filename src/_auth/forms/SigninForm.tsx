@@ -18,15 +18,11 @@ const SigninForm = () => {
   const navigate = useNavigate();
   const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
 
-  // Query
   const { mutateAsync: signInAccount, isLoading } = useSignInAccount();
 
   const form = useForm<z.infer<typeof SigninValidation>>({
     resolver: zodResolver(SigninValidation),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+    defaultValues: { email: "", password: "" },
   });
 
   const handleSignin = async (user: z.infer<typeof SigninValidation>) => {
@@ -34,7 +30,6 @@ const SigninForm = () => {
 
     if (!session) {
       toast({ title: "Login failed. Please try again." });
-      
       return;
     }
 
@@ -42,29 +37,25 @@ const SigninForm = () => {
 
     if (isLoggedIn) {
       form.reset();
-
       navigate("/");
     } else {
-      toast({ title: "Login failed. Please try again.", });
-      
-      return;
+      toast({ title: "Login failed. Please try again." });
     }
   };
 
   return (
     <Form {...form}>
-      <div className="sm:w-420 flex-center flex-col">
+      <div className="max-w-feed flex-center flex-col">
         <img src="/assets/images/logo.svg" alt="logo" />
 
-        <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12">
+        <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12 text-text">
           Log in to your account
         </h2>
-        <p className="text-light-3 small-medium md:base-regular mt-2">
+        <p className="text-muted small-medium md:base-regular mt-2 text-center">
           Welcome back! Please enter your details.
         </p>
-        <form
-          onSubmit={form.handleSubmit(handleSignin)}
-          className="flex flex-col gap-5 w-full mt-4">
+
+        <form onSubmit={form.handleSubmit(handleSignin)} className="flex flex-col gap-5 w-full mt-4">
           <FormField
             control={form.control}
             name="email"
@@ -103,11 +94,9 @@ const SigninForm = () => {
             )}
           </Button>
 
-          <p className="text-small-regular text-light-2 text-center mt-2">
+          <p className="text-center text-muted small-regular mt-2">
             Don&apos;t have an account?
-            <Link
-              to="/sign-up"
-              className="text-primary-500 text-small-semibold ml-1">
+            <Link to="/sign-up" className="text-primary ml-1 small-semibold">
               Sign up
             </Link>
           </p>
