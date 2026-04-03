@@ -16,31 +16,31 @@ module.exports = {
     },
 
     extend: {
-      // 🎨 COLORS (meme vibe)
+      // 🎨 COLORS (meme app style)
       colors: {
-        bg: '#0a0a0a',          // main background
-        card: '#121214',        // post background
+        bg: '#0a0a0a',        // main background
+        card: '#121214',      // post cards
         border: '#1f1f22',
 
-        primary: '#ff3b3b',     // like / upvote
-        secondary: '#ffd60a',   // highlight / coins
-        accent: '#3b82f6',      // buttons
+        primary: '#ff3b3b',   // likes / upvotes
+        secondary: '#ffd60a', // highlights / coins
+        accent: '#3b82f6',    // buttons
 
         text: '#ffffff',
         muted: '#9ca3af',
       },
 
-      // 📱 FEED WIDTH (like TikTok)
+      // 📱 centered feed width
       maxWidth: {
         feed: '500px',
       },
 
-      // 🔤 FONT
+      // 🔤 font
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
       },
 
-      // ⚡ FAST ANIMATIONS
+      // ⚡ animations (fast + smooth)
       keyframes: {
         fadeIn: {
           '0%': { opacity: 0 },
@@ -62,7 +62,7 @@ module.exports = {
         slide: 'slideUp 0.2s ease-out',
       },
 
-      // 🧱 BORDER RADIUS (modern cards)
+      // 🧱 rounded cards
       borderRadius: {
         xl: '1rem',
         '2xl': '1.5rem',
