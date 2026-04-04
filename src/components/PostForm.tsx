@@ -25,3 +25,16 @@ const PostForm = () => {
 };
 
 export default PostForm;
+
+import React from 'react';
+
+const PostForm = () => {
+    // Your form code here
+    return (
+        <form>
+            {/* form fields */}
+        </form>
+    );
+};
+
+export default PostForm;
