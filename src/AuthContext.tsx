@@ -10,9 +10,9 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [user, setUser] = useState(null);
+    const [user] = useState(null)
 
-    const signIn = async (credentials: any) => {
+    const signIn = async (_credentials: any) => {
         // Logic for signing in
         // setUser(userData);
     };
