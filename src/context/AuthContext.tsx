@@ -65,14 +65,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  useEffect(() => {
-    const cookieFallback = localStorage.getItem("cookieFallback");
-    if (!cookieFallback || cookieFallback === "[]") {
+useEffect(() => {
+  checkAuthUser().then((isLoggedIn) => {
+    if (!isLoggedIn) {
       navigate("/sign-in");
     }
-
-    checkAuthUser();
-  }, [navigate]);
+  });
+}, []);
 
   const value: IContextType = {
     user,
