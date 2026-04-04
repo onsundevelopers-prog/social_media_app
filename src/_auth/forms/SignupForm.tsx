@@ -16,7 +16,7 @@ import { useUserContext } from "@/context/AuthContext";
 const SignupForm = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { checkAuthUser, isLoading: isUserLoading, signInGuest } = useUserContext();
+  const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
 
   const form = useForm<z.infer<typeof SignupValidation>>({
     resolver: zodResolver(SignupValidation),
@@ -39,18 +39,6 @@ const SignupForm = () => {
         form.reset();
         navigate("/");
       }
-    } catch (error) {
-      console.log(error);
-      toast({ title: "Something went wrong." });
-    }
-  };
-
-  // 🌟 Guest login handler
-  const handleGuest = async () => {
-    try {
-      const session = await signInGuest(); // this should create a temporary guest session
-      if (session) navigate("/");
-      else toast({ title: "Could not continue as guest." });
     } catch (error) {
       console.log(error);
       toast({ title: "Something went wrong." });
@@ -105,11 +93,6 @@ const SignupForm = () => {
             ) : "Sign Up"}
           </Button>
 
-          {/* 🌟 Continue as Guest */}
-          <Button type="button" onClick={handleGuest} className="shad-button_ghost mt-2">
-            Continue as Guest
-          </Button>
-
           <p className="text-center text-muted small-regular mt-2">
             Already have an account?
             <Link to="/sign-in" className="text-primary ml-1 small-semibold">
@@ -120,27 +103,6 @@ const SignupForm = () => {
       </div>
     </Form>
   );
-};
-
-export default SignupForm;
-
-import React from 'react';
-import { useForm } from 'react-hook-form';
-
-const SignupForm = () => {
-    const { register, handleSubmit } = useForm();
-
-    const onSubmit = (data) => {
-        console.log(data);
-    };
-
-    return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <input {...register('email')} placeholder="Email" />
-            <input {...register('password')} placeholder="Password" type="password" />
-            <button type="submit">Sign Up</button>
-        </form>
-    );
 };
 
 export default SignupForm;
