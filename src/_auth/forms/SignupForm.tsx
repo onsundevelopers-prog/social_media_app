@@ -123,3 +123,24 @@ const SignupForm = () => {
 };
 
 export default SignupForm;
+
+import React from 'react';
+import { useForm } from 'react-hook-form';
+
+const SignupForm = () => {
+    const { register, handleSubmit } = useForm();
+
+    const onSubmit = (data) => {
+        console.log(data);
+    };
+
+    return (
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <input {...register('email')} placeholder="Email" />
+            <input {...register('password')} placeholder="Password" type="password" />
+            <button type="submit">Sign Up</button>
+        </form>
+    );
+};
+
+export default SignupForm;
