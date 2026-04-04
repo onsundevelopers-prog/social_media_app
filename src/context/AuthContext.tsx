@@ -20,7 +20,6 @@ type IContextType = {
   isAuthenticated: boolean;
   setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
   checkAuthUser: () => Promise<boolean>;
-  signInGuest: () => Promise<IUser>; // ✅ added guest login
 };
 
 const INITIAL_STATE = {
@@ -30,7 +29,6 @@ const INITIAL_STATE = {
   setUser: () => {},
   setIsAuthenticated: () => {},
   checkAuthUser: async () => false,
-  signInGuest: async () => INITIAL_USER, // default placeholder
 };
 
 const AuthContext = createContext<IContextType>(INITIAL_STATE);
@@ -67,26 +65,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // ✅ Guest login
-  const signInGuest = async () => {
-    setIsLoading(true);
-    try {
-      const guestUser: IUser = {
-        id: "guest_" + Date.now(),
-        name: "Guest",
-        username: "Guest" + Math.floor(Math.random() * 10000),
-        email: "",
-        imageUrl: "",
-        bio: "",
-      };
-      setUser(guestUser);
-      setIsAuthenticated(true);
-      return guestUser;
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
     const cookieFallback = localStorage.getItem("cookieFallback");
     if (!cookieFallback || cookieFallback === "[]") {
@@ -94,7 +72,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     checkAuthUser();
-  }, []);
+  }, [navigate]);
 
   const value: IContextType = {
     user,
@@ -103,7 +81,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     isAuthenticated,
     setIsAuthenticated,
     checkAuthUser,
-    signInGuest, // provide guest login
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
